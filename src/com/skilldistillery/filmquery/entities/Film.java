@@ -16,7 +16,7 @@ public class Film {
 	private double replacementCost;
 	private String rating;
 	private String specialFeatures;
-	
+
 	private List<Actor> actorList = new ArrayList<>();
 
 	// Constructor
@@ -125,6 +125,14 @@ public class Film {
 		this.specialFeatures = specialFeatures;
 	}
 
+	public List<Actor> getActorList() {
+		return actorList;
+	}
+
+	public void setActorList(List<Actor> actorList) {
+		this.actorList = actorList;
+	}
+
 	// Equals & Hashcode Methods
 	@Override
 	public int hashCode() {
@@ -201,7 +209,7 @@ public class Film {
 				.append(languageId).append(", rentalDuration=").append(rentalDuration).append(", rentalRate=")
 				.append(rentalRate).append(", length=").append(length).append(", replacementCost=")
 				.append(replacementCost).append(", rating=").append(rating).append(", specialFeatures=")
-				.append(specialFeatures).append("]");
+				.append(specialFeatures).append(", actorList=").append(actorList).append("]");
 		return builder.toString();
 	}
 

@@ -68,14 +68,18 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				film = new Film(filmId, title, desc, releaseYear, langId, rentDur, rate, length, repCost, rating,
 						features);
 			}
+			
+			film.setActorList(getActorsByFilmId(filmId));
 
 			rs.close();
 			stmt.close();
-
+			
 		} catch (SQLException e) {
 			System.err.println(e);
+		} catch (NullPointerException e) {
+			return null;
 		}
-
+		
 		if (film == null) {
 			return null;
 		} else {
@@ -107,6 +111,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		} catch (SQLException e) {
 			System.err.println(e);
+		} catch (NullPointerException e) {
+			return null;
 		}
 
 		if (actor == null) {
@@ -142,13 +148,12 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 
 		} catch (SQLException e) {
 			System.err.println(e);
+		} catch (NullPointerException e) {
+			return null;
 		}
 
-		if (actor == null) {
-			return null;
-		} else {
-			return actorList;
-		}
+	
+		return actorList;
 	}
 
 }
