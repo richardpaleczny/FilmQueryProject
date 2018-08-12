@@ -1,12 +1,10 @@
 package com.skilldistillery.filmquery.app;
 
-import java.util.List;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.skilldistillery.filmquery.database.DatabaseAccessor;
 import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
-import com.skilldistillery.filmquery.entities.Actor;
-import com.skilldistillery.filmquery.entities.Film;
 
 public class FilmQueryApp {
 
@@ -43,9 +41,9 @@ public class FilmQueryApp {
 
 		boolean condition = true;
 		String userInput = null;
-		
+
 		do {
-			
+
 			System.out.println("=== MENU ===");
 			System.out.println("What would you like to do?");
 			System.out.println("1. Get Film");
@@ -55,7 +53,7 @@ public class FilmQueryApp {
 			System.out.print("Input: ");
 			userInput = input.next();
 
-			if (!(userInput.equals("1")) && !(userInput.equals("2")) && !(userInput.equals("3")) 
+			if (!(userInput.equals("1")) && !(userInput.equals("2")) && !(userInput.equals("3"))
 					&& !(userInput.equals("4"))) {
 				System.out.println("\nIncorrect input.\n");
 			} else if (userInput.equals("4")) {
@@ -64,15 +62,57 @@ public class FilmQueryApp {
 			} else {
 				condition = false;
 			}
-			
+
 		} while (condition);
 
 		System.out.println();
+
+		int idInput;
 		switch (userInput) {
 		case "1":
-			System.out.print("Enter the film id: ");
-			int idInput = input.nextInt();
-			System.out.println("\nReturn Query: " + db.getFilmById(idInput));
+			boolean innerCondition = true;
+			try {
+
+				do {
+					System.out.println("=== OPTIONS ===");
+					System.out.println("1. Search film by id");
+					System.out.println("2. Search film by keyword");
+					System.out.println("3. Exit");
+					System.out.print("Input: ");
+					int innerMenuInput = input.nextInt();
+
+					switch (innerMenuInput) {
+					case 1:
+						System.out.print("Enter the film id: ");
+						idInput = input.nextInt();
+						if (db.getFilmById(idInput) != null) {
+							System.out.println(db.getFilmById(idInput));
+						} else {
+							System.out.println("\nReturn Query: Film not found.\n");
+						}
+						break;
+					case 2:
+						System.out.print("Enter film keyword(s): ");
+						break;
+					default:
+						break;
+					}
+
+					if (innerMenuInput != 1 && innerMenuInput != 2 && innerMenuInput != 3) {
+						System.out.println("\nIncorrect input.\n");
+					} else if (innerMenuInput == 3) {
+						System.out.println("Exiting program...");
+						System.exit(0);
+					} else {
+						innerCondition = false;
+					}
+
+				} while (innerCondition);
+
+			} catch (InputMismatchException e) {
+				System.out.println(e);
+			}
+
 			break;
 		case "2":
 			System.out.print("Enter the actor id: ");
@@ -85,6 +125,7 @@ public class FilmQueryApp {
 			System.out.println("\nReturn Query: " + db.getActorsByFilmId(idInput));
 			break;
 		default:
+			break;
 		}
 
 	}

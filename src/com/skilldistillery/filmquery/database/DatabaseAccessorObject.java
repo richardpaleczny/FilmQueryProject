@@ -65,21 +65,36 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 				double repCost = rs.getDouble(9);
 				String rating = rs.getString(10);
 				String features = rs.getString(11);
-				film = new Film(filmId, title, desc, releaseYear, langId, rentDur, rate, length, repCost, rating,
+				film = new Film(filmId, title, desc, releaseYear, langId, rentDur,
+						rate, length, repCost, rating,
 						features);
 			}
 			
+			// Get language string
+			sql = "SELECT language.name FROM language JOIN film "
+					+ "ON film.language_id = language.id "
+					+ "WHERE film.id = ?";
+			stmt = conn.prepareStatement(sql);
+			stmt.setInt(1,  filmId);
+			rs = stmt.executeQuery();
+			if (rs.next() == true) {
+				String language = rs.getString(1);
+				film.setLanguage(language);
+			}
+
+			// Get all actors of film id given and put them in Film object's inherent list field
+			// Do this by calling the other method in this class *getActorsByFilmId()*
 			film.setActorList(getActorsByFilmId(filmId));
 
 			rs.close();
 			stmt.close();
-			
+
 		} catch (SQLException e) {
 			System.err.println(e);
 		} catch (NullPointerException e) {
 			return null;
 		}
-		
+
 		if (film == null) {
 			return null;
 		} else {
@@ -90,7 +105,8 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 	@Override
 	public Actor getActorById(int actorId) {
 
-		String sql = "SELECT actor.id, actor.first_name, actor.last_name " + "FROM actor WHERE actor.id = ?";
+		String sql = "SELECT actor.id, actor.first_name, actor.last_name " 
+		+ "FROM actor WHERE actor.id = ?";
 
 		Actor actor = null;
 		try (Connection conn = DriverManager.getConnection(URL, user, pass);) {
@@ -152,7 +168,6 @@ public class DatabaseAccessorObject implements DatabaseAccessor {
 			return null;
 		}
 
-	
 		return actorList;
 	}
 
