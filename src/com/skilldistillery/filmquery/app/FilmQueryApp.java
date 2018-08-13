@@ -5,6 +5,8 @@ import java.util.Scanner;
 
 import com.skilldistillery.filmquery.database.DatabaseAccessor;
 import com.skilldistillery.filmquery.database.DatabaseAccessorObject;
+import com.skilldistillery.filmquery.entities.Actor;
+import com.skilldistillery.filmquery.entities.Film;
 
 public class FilmQueryApp {
 
@@ -13,21 +15,7 @@ public class FilmQueryApp {
 	public static void main(String[] args) {
 		FilmQueryApp app = new FilmQueryApp();
 		app.launch();
-//		app.test();
 	}
-
-//	private void test() {
-//
-//		Film film = db.getFilmById(-42);
-//		System.out.println(film);
-//
-//		Actor actor = db.getActorById(1);
-//		System.out.println(actor);
-//
-//		List<Actor> test = db.getActorsByFilmId(1);
-//		System.out.println(test);
-//
-//	}
 
 	private void launch() {
 		Scanner input = new Scanner(System.in);
@@ -71,6 +59,7 @@ public class FilmQueryApp {
 		switch (userInput) {
 		case "1":
 			boolean innerCondition = true;
+			
 			try {
 
 				do {
@@ -92,7 +81,19 @@ public class FilmQueryApp {
 						}
 						break;
 					case 2:
-						System.out.print("Enter film keyword(s): ");
+						System.out.print("Enter a film keyword: ");
+						String keywordInput = input.next();
+						
+						if (db.getFilmsByKeyword(keywordInput).size() != 0) {
+							System.out.println("\nRETRIEVING FILM MATCHES...");
+							
+							for (Film film : db.getFilmsByKeyword(keywordInput)) {
+								System.out.println(film);
+							}
+
+						} else {
+							System.out.println("\nReturn Query: Film(s) not found.\n");
+						}
 						break;
 					default:
 						break;
@@ -122,7 +123,11 @@ public class FilmQueryApp {
 		case "3":
 			System.out.println("Enter the film id: ");
 			idInput = input.nextInt();
-			System.out.println("\nReturn Query: " + db.getActorsByFilmId(idInput));
+			System.out.println("\n\n|######################|"
+					+ "\n|/////////Cast/////////|\n|######################|\n");
+			for (Actor actor : db.getActorsByFilmId(idInput)) {
+				System.out.println(actor);
+			}
 			break;
 		default:
 			break;

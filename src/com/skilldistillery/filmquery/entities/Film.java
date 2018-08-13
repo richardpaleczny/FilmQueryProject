@@ -213,12 +213,6 @@ public class Film {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-//		builder.append("Film [id=").append(id).append(", title=").append(title).append(", description=")
-//				.append(description).append(", releaseYear=").append(releaseYear).append(", languageId=")
-//				.append(languageId).append(", rentalDuration=").append(rentalDuration).append(", rentalRate=")
-//				.append(rentalRate).append(", length=").append(length).append(", replacementCost=")
-//				.append(replacementCost).append(", rating=").append(rating).append(", specialFeatures=")
-//				.append(specialFeatures).append(", actorList=").append(actorList).append("]");
 
 		builder.append("\n=== FILM FOUND ===\n").append("Title: ").append(title).append("\nYear: ").append(releaseYear)
 				.append("\nRating: ").append(rating).append("\nDescription: ").append(description)
